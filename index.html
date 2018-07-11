@@ -5,6 +5,11 @@
 <title>Africa Image and Map Portal</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v1.0.0/leaflet.markercluster.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v1.0.0/MarkerCluster.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v1.0.0/MarkerCluster.Default.css' rel='stylesheet' />
+
 <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
 <style>
   body { margin:0; padding:0; }
@@ -48,12 +53,14 @@ var continent = L.mapbox.featureLayer()
     .on('ready', function(){
       continent.setStyle({fill: false})
       continent.eachLayer(function(layer) {
-        var regionText = '<strong>Poster name: </strong>' + layer.feature.properties.TITLE;
+        var regionText = '<strong>Poster name: </strong>' + layer.feature.properties.TITLE + '<br \/>' + "<a href='" + layer.feature.properties.LINK + "' >Link to poster index</a>";
         layer.bindPopup(regionText);
       });
 
     })
     .addTo(map);
+
+
 
 var region = L.mapbox.featureLayer()
     .loadURL('APC_region.geojson')
@@ -90,6 +97,8 @@ var country = L.mapbox.featureLayer()
     })
     .addTo(map);
 
+
+
 var city = L.mapbox.featureLayer()
    .loadURL('APC_city.geojson')
    .on('ready', function(){
@@ -102,6 +111,116 @@ var city = L.mapbox.featureLayer()
    })
     .addTo(map);
 
+    var tubman = L.mapbox.featureLayer()
+        .loadURL('image_tubman.geojson')
+        .on('ready', function(e) {
+    // The clusterGroup gets each marker in the group added to it
+    // once loaded, and then is added to the map
+    var clusterGroup = new L.MarkerClusterGroup({
+
+      polygonOptions: {
+        fillColor: '#7ef9ff',
+        color: '#7ef9ff',
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.5
+      }
+    });
+    e.target.eachLayer(function(layer) {
+      clusterGroup.addLayer(layer);
+    });
+    map.addLayer(clusterGroup);
+
+
+        tubman.eachLayer(function(layer) {
+          var imageText = '<strong>Title: </strong>' + layer.feature.properties.title + '<br \/>' + "<a href='" + layer.feature.properties.id + "' >Link to image</a>";
+          layer.bindPopup(imageText);
+        });
+});
+
+
+
+        var whitten = L.mapbox.featureLayer()
+            .loadURL('image_whitten.geojson')
+            .on('ready', function(e) {
+        // The clusterGroup gets each marker in the group added to it
+        // once loaded, and then is added to the map
+        var clusterGroup = new L.MarkerClusterGroup({
+
+          polygonOptions: {
+            fillColor: '#7ef9ff',
+            color: '#7ef9ff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.5
+          }
+        });
+        e.target.eachLayer(function(layer) {
+          clusterGroup.addLayer(layer);
+        });
+        map.addLayer(clusterGroup);
+
+
+            whitten.eachLayer(function(layer) {
+              var imageText = '<strong>Title: </strong>' + layer.feature.properties.title + '<br \/>' + "<a href='" + layer.feature.properties.id + "' >Link to image</a>";
+              layer.bindPopup(imageText);
+            });
+    });
+
+  var mcevoy = L.mapbox.featureLayer()
+                .loadURL('image_mcevoy.geojson')
+                .on('ready', function(e) {
+            // The clusterGroup gets each marker in the group added to it
+            // once loaded, and then is added to the map
+            var clusterGroup = new L.MarkerClusterGroup({
+
+              polygonOptions: {
+                fillColor: '#7ef9ff',
+                color: '#7ef9ff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.5
+              }
+            });
+            e.target.eachLayer(function(layer) {
+              clusterGroup.addLayer(layer);
+            });
+            map.addLayer(clusterGroup);
+
+
+                mcevoy.eachLayer(function(layer) {
+                  var imageText = '<strong>Title: </strong>' + layer.feature.properties.title + '<br \/>' + "<a href='" + layer.feature.properties.id + "' >Link to image</a>";
+                  layer.bindPopup(imageText);
+                });
+        });
+
+  var clark = L.mapbox.featureLayer()
+                    .loadURL('image_clark.geojson')
+                    .on('ready', function(e) {
+                // The clusterGroup gets each marker in the group added to it
+                // once loaded, and then is added to the map
+                var clusterGroup = new L.MarkerClusterGroup({
+
+                  polygonOptions: {
+                    fillColor: '#7ef9ff',
+                    color: '#7ef9ff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.5
+                  }
+                });
+                e.target.eachLayer(function(layer) {
+                  clusterGroup.addLayer(layer);
+                });
+                map.addLayer(clusterGroup);
+
+
+                    clark.eachLayer(function(layer) {
+                      var imageText = '<strong>Title: </strong>' + layer.feature.properties.title + '<br \/>' + "<a href='" + layer.feature.properties.id + "' >Link to image</a>";
+                      layer.bindPopup(imageText);
+                    });
+            });
+
 L.control.layers({
   "West Africa Topographic Maps": westTopo,
   "Zambia Topographic Maps": zambia,
@@ -110,6 +229,10 @@ L.control.layers({
   "Africa Poster Collection - Regions": region,
   "Africa Poster Collection - Natural Features": natural,
   "Africa Poster Collection - Cities": city,
+  "Tubman Photo Collection": tubman,
+  "Whitten Photo Collection": whitten,
+  "McEvoy Photo Collection": mcevoy,
+  "Clark Photo Collection": clark,
 }).addTo(map);
 
 map.legendControl.addLegend('<strong>Africa Image and Map Portal </strong><br\/> Click on the layer selector in the top right corner to explore maps, posters, and images from the <a href="https://libraries.indiana.edu/african-studies">Indiana University African Studies Collection</a>');
